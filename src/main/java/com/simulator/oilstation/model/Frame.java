@@ -8,13 +8,13 @@ import java.util.UUID;
 @Getter
 public class Frame {
     private final UUID frameId = UUID.randomUUID();
-    private Double voltage; // V
-    private Double current; // A
-    private Double speed; // rpm
-    private Double frequency; // Hz
-    private Double temperature; // F
-    private Double pressure; // bar
-    private Double liquidFlowRate; // m3/h
+    private Value voltage;
+    private Value current;
+    private Value speed;
+    private Value frequency;
+    private Value temperature;
+    private Value pressure;
+    private Value liquidFlowRate;
     private final LocalDateTime timestamp = LocalDateTime.now();
 
     private Frame() {
@@ -27,37 +27,37 @@ public class Frame {
             this.frame = new Frame();
         }
 
-        public Builder voltage(Double voltage) {
+        public Builder voltage(Value voltage) {
             frame.voltage = voltage;
             return this;
         }
 
-        public Builder current(Double current) {
+        public Builder current(Value current) {
             frame.current = current;
             return this;
         }
 
-        public Builder speed(Double speed) {
+        public Builder speed(Value speed) {
             frame.speed = speed;
             return this;
         }
 
-        public Builder frequency(Double frequency) {
+        public Builder frequency(Value frequency) {
             frame.frequency = frequency;
             return this;
         }
 
-        public Builder temperature(Double temperature) {
+        public Builder temperature(Value temperature) {
             frame.temperature = temperature;
             return this;
         }
 
-        public Builder pressure(Double pressure) {
+        public Builder pressure(Value pressure) {
             frame.pressure = pressure;
             return this;
         }
 
-        public Builder liquidFlowRate(Double liquidFlowRate) {
+        public Builder liquidFlowRate(Value liquidFlowRate) {
             frame.liquidFlowRate = liquidFlowRate;
             return this;
         }
