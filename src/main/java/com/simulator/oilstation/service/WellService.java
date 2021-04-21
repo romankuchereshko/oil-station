@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Slf4j
 @Service
 public class WellService {
-    private boolean toggle;
-
     private final FrameSender frameSender;
     private final Integer wellNumber;
     private final Generator generator;
+
+    private AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
 
     @Autowired
     public WellService(@Qualifier("consoleFrameSenderImpl") FrameSender frameSender,
@@ -27,10 +29,16 @@ public class WellService {
         this.generator = generator;
     }
 
+    public void toggle() {
+        isGenerating.set(!isGenerating.get());
+    }
+
     @Scheduled(fixedRateString = "${cron.rate}")
     public void cronJob() {
-        log.info("**************************************************************");
-        frameSender.send(generator.generate(wellNumber));
-        log.info("**************************************************************");
+        if (isGenerating.get()) {
+            log.info("**************************************************************");
+            frameSender.send(generator.generate(wellNumber));
+            log.info("**************************************************************");
+        }
     }
 }
