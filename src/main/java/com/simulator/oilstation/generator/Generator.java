@@ -6,14 +6,15 @@ import com.simulator.oilstation.properties.FrameProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
 public class Generator {
     private final FrameProperties frameProperties;
-    private final DecimalFormat df = new DecimalFormat("#.##");
+
 
     @Autowired
     public Generator(FrameProperties frameProperties) {
@@ -24,6 +25,7 @@ public class Generator {
         Collection<Frame> frameCollection = new ArrayList<>();
         for (int i = 0; i < wellNumber; i++) {
             frameCollection.add(new Frame.Builder()
+                    .wellId(i + 1)
                     .voltage(Value.builder()
                             .defaultValue(frameProperties.getVoltageDefaultValue())
                             .value(getRandomInRange(frameProperties.getVoltageMinValue(), frameProperties.getVoltageMaxValue()))
@@ -55,11 +57,12 @@ public class Generator {
                             .build())
                     .build());
         }
-
         return frameCollection;
     }
 
     private Double getRandomInRange(Double min, Double max) {
-        return Double.valueOf(df.format(min + (Math.random() * (max - min))));
+        double random = min + (Math.random() * (max - min));
+        BigDecimal decimal = new BigDecimal(random).setScale(2, RoundingMode.HALF_UP);
+        return decimal.doubleValue();
     }
 }
