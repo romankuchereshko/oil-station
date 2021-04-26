@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Component
 public class Generator {
     private final FrameProperties frameProperties;
-
+    private final ArrayList<Frame> frameWithUUIDCollection = new ArrayList<>();
 
     @Autowired
     public Generator(FrameProperties frameProperties) {
@@ -23,9 +24,10 @@ public class Generator {
 
     public Collection<Frame> generate(int wellNumber) {
         Collection<Frame> frameCollection = new ArrayList<>();
+
         for (int i = 0; i < wellNumber; i++) {
             frameCollection.add(new Frame.Builder()
-                    .wellId(i + 1)
+                    .wellId(frameWithUUIDCollection.isEmpty() ? UUID.randomUUID() : frameWithUUIDCollection.get(i).getWellId())
                     .voltage(Value.builder()
                             .defaultValue(frameProperties.getVoltageDefaultValue())
                             .value(getRandomInRange(frameProperties.getVoltageMinValue(), frameProperties.getVoltageMaxValue()))
@@ -56,6 +58,9 @@ public class Generator {
                             .unit(frameProperties.getLiquidFlowRateUnit())
                             .build())
                     .build());
+        }
+        if (frameWithUUIDCollection.isEmpty()) {
+            frameWithUUIDCollection.addAll(frameCollection);
         }
         return frameCollection;
     }

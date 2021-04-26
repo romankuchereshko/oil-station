@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 public class Frame {
     private final UUID frameId = UUID.randomUUID();
-    private Integer wellId;
+    private UUID wellId;
     private Value voltage;
     private Value current;
     private Value speed;
@@ -28,7 +28,7 @@ public class Frame {
             this.frame = new Frame();
         }
 
-        public Builder wellId(Integer wellId) {
+        public Builder wellId(UUID wellId) {
             frame.wellId = wellId;
             return this;
         }
