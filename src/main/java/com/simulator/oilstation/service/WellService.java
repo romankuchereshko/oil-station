@@ -1,13 +1,11 @@
 package com.simulator.oilstation.service;
 
-import com.simulator.oilstation.OilStationApplication;
 import com.simulator.oilstation.generator.Generator;
 import com.simulator.oilstation.sender.FrameSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ public class WellService {
     private final Integer wellNumber;
     private final Generator generator;
 
-    private final List<UUID> uuidList = new ArrayList<>();
+    private final List<UUID> wellUuidList = new ArrayList<>();
 
     private AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
 
@@ -45,16 +43,16 @@ public class WellService {
     public void cronJob() {
         if (isGenerating.get()) {
             log.info("**************************************************************");
-            frameSender.send(generator.generate(uuidList));
+            frameSender.send(generator.generate(wellUuidList));
             log.info("**************************************************************");
         }
     }
 
     @PostConstruct
-    public List<UUID> getUuidList() {
+    private List<UUID> createWellUuidList() {
         for (int i = 0; i < wellNumber; i++) {
-            uuidList.add(UUID.randomUUID());
+            wellUuidList.add(UUID.randomUUID());
         }
-        return uuidList;
+        return wellUuidList;
     }
 }
