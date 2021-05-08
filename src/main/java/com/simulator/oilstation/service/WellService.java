@@ -27,7 +27,7 @@ public class WellService {
     private AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
 
     @Autowired
-    public WellService(@Qualifier("consoleFrameSenderImpl") FrameSender frameSender,
+    public WellService(@Qualifier("kafkaFrameSender") FrameSender frameSender,
                        @Value("${well.number}") Integer wellNumber,
                        Generator generator) {
         this.frameSender = frameSender;
@@ -42,9 +42,7 @@ public class WellService {
     @Scheduled(fixedRateString = "${cron.rate}")
     public void cronJob() {
         if (isGenerating.get()) {
-            log.info("**************************************************************");
             frameSender.send(generator.generate(wellUuidList));
-            log.info("**************************************************************");
         }
     }
 

@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simulator.oilstation.model.Frame;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 @Slf4j
-@Component
 public class ConsoleFrameSenderImpl implements FrameSender {
 
     @Autowired
