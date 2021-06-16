@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Slf4j
 public class KafkaFrameSenderImpl implements FrameSender {
-    private KafkaTemplate<String, Collection<Frame>> kafkaTemplate;
+    private final KafkaTemplate<String, Collection<Frame>> kafkaTemplate;
     private final String TOPIC = "frames";
 
     public KafkaFrameSenderImpl(KafkaTemplate<String, Collection<Frame>> kafkaTemplate) {

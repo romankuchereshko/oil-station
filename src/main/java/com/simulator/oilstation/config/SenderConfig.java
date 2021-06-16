@@ -1,5 +1,6 @@
 package com.simulator.oilstation.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simulator.oilstation.model.Frame;
 import com.simulator.oilstation.sender.ConsoleFrameSenderImpl;
 import com.simulator.oilstation.sender.FrameSender;
@@ -15,7 +16,7 @@ public class SenderConfig {
 
     @Bean
     public FrameSender consoleFrameSender() {
-        return new ConsoleFrameSenderImpl();
+        return new ConsoleFrameSenderImpl(new ObjectMapper());
     }
 
     @Bean
