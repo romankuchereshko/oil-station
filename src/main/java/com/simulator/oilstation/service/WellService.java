@@ -24,7 +24,7 @@ public class WellService {
 
     private final List<UUID> wellUuidList = new ArrayList<>();
 
-    private AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
+    private final AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
 
     @Autowired
     public WellService(@Qualifier("kafkaFrameSender") FrameSender frameSender,
