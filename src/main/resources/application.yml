@@ -5,7 +5,7 @@ topic:
   name: frames
 
 cron:
-  rate: 1000
+  rate: 3000
 well:
   number: 3
 frame:
