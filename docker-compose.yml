@@ -1,70 +1,48 @@
-version: '3.5'
+version: "3.7"
 
-x-constants:
-  kafka: &kafka
-    ALLOW_PLAINTEXT_LISTENER: "yes"
-    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092, PLAINTEXT_HOST://localhost:29092
-    KAFKA_LISTENERS: PLAINTEXT://:9092, PLAINTEXT_HOST://:29092
-    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  zookeeper: &zookeeper
-    ALLOW_ANONYMOUS_LOGIN: "yes"
-  oil-station: &oil-station
-    KAFKA_BROKER_LIST: kafka:9092
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
 
 services:
   zookeeper:
-    image: docker.io/bitnami/zookeeper:3
+    image: zookeeper:3.7.0
+    container_name: zookeeper
+    restart: "no"
+    networks:
+      - kafka-net
     ports:
       - "2181:2181"
-    environment:
-      <<: *zookeeper
-    volumes:
-      - zookeeper_vol:/bitnami/zookeeper
-    networks:
-      - spring-cloud-network
-    logging:
-      options:
-        max-size: 50m
 
   kafka:
-    image: docker.io/bitnami/kafka:2
+    image: obsidiandynamics/kafka
+    container_name: kafka
+    restart: "no"
+    networks:
+      - kafka-net
     ports:
       - "9092:9092"
-      - "29092:29092"
     environment:
-      <<: *kafka
-    volumes:
-      - kafka_vol:/bitnami/kafka
-    networks:
-      - spring-cloud-network
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
-    logging:
-      options:
-        max-size: 50m
-  #    bootstrapServers: ${spring.embedded.kafka.brokers}
 
-  oil-station:
-    container_name: oil-station
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: oil-station:latest
-    ports:
-      - 8080:8080
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    restart: "no"
     networks:
-      - spring-cloud-network
-    depends_on:
-      - kafka
+      - kafka-net
+    ports:
+      - "9000:9000"
     environment:
-      <<: *oil-station
-
-networks:
-  spring-cloud-network:
-    driver: bridge
-
-volumes:
-  zookeeper_vol:
-  kafka_vol:
-
+      KAFKA_BROKERCONNECT: "kafka:29092"
+    depends_on:
+      - "kafka"

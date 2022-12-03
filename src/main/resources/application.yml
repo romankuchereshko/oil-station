@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+topic:
+  name: frames
+
+cron:
+  rate: 1000
+well:
+  number: 3
+frame:
+  voltage:
+    min-value: 200
+    max-value: 240
+    unit: "V"
+  current:
+    min-value: 40
+    max-value: 60
+    unit: "A"
+  speed:
+    min-value: 2600
+    max-value: 3300
+    unit: "rmp"
+  frequency:
+    min-value: 40
+    max-value: 60
+    unit: "Hz"
+  temperature:
+    min-value: 175
+    max-value: 225
+    unit: "F"
+  pressure:
+    min-value: 1200
+    max-value: 2500
+    unit: "Bar"
+  liquid-flow-rate:
+    min-value: 5
+    max-value: 15
+    unit: "m^3/h"

@@ -1,56 +1,58 @@
 package com.simulator.oilstation.service;
 
-import com.simulator.oilstation.generator.Generator;
-import com.simulator.oilstation.sender.FrameSender;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.IntStream;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import com.simulator.oilstation.service.frame.FrameSender;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class WellService {
-    private final FrameSender frameSender;
-    private final Integer wellNumber;
-    private final Generator generator;
 
-    private final List<UUID> wellUuidList = new ArrayList<>();
+    private final List<UUID> wellsUuids = new ArrayList<>();
 
-    private final AtomicBoolean isGenerating = new AtomicBoolean(Boolean.TRUE);
+    private final AtomicBoolean isGenerating = new AtomicBoolean(Boolean.FALSE);
 
-    @Autowired
-    public WellService(@Qualifier("kafkaFrameSender") FrameSender frameSender,
-                       @Value("${well.number}") Integer wellNumber,
-                       Generator generator) {
-        this.frameSender = frameSender;
-        this.wellNumber = wellNumber;
-        this.generator = generator;
-    }
+    private final FrameSender kafkaFrameSender;
 
-    public void toggle() {
-        isGenerating.set(!isGenerating.get());
-    }
+    private final GeneratorService generatorService;
 
-    @Scheduled(fixedRateString = "${cron.rate}")
-    public void cronJob() {
-        if (isGenerating.get()) {
-            frameSender.send(generator.generate(wellUuidList));
+    @Value("${well.number}")
+    private String wellsQuantity;
+
+    public void toggleGenerator() {
+        this.isGenerating.set(!this.isGenerating.get());
+
+        if (this.isGenerating.get()) {
+            log.info("Generator is working now!");
+        } else {
+            log.info("Generator has stopped!");
         }
     }
 
     @PostConstruct
-    private List<UUID> createWellUuidList() {
-        for (int i = 0; i < wellNumber; i++) {
-            wellUuidList.add(UUID.randomUUID());
+    private List<UUID> defineWellsUuidList() {
+        IntStream.range(0, Integer.parseInt(this.wellsQuantity))
+            .forEach(value -> this.wellsUuids.add(UUID.randomUUID()));
+        return this.wellsUuids;
+    }
+
+    @Scheduled(fixedRateString = "${cron.rate}")
+    public void cronJob() {
+        if (this.isGenerating.get()) {
+            this.kafkaFrameSender.send(this.generatorService.generate(this.wellsUuids));
         }
-        return wellUuidList;
     }
 }

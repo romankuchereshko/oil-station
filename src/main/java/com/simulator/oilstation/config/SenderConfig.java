@@ -1,15 +1,16 @@
 package com.simulator.oilstation.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simulator.oilstation.model.Frame;
-import com.simulator.oilstation.sender.ConsoleFrameSenderImpl;
-import com.simulator.oilstation.sender.FrameSender;
-import com.simulator.oilstation.sender.KafkaFrameSenderImpl;
+import java.util.Collection;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.util.Collection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simulator.oilstation.domain.frame.Frame;
+import com.simulator.oilstation.service.frame.FrameSender;
+import com.simulator.oilstation.service.frame.impl.ConsoleFrameSenderImpl;
+import com.simulator.oilstation.service.frame.impl.KafkaFrameSenderImpl;
 
 @Configuration
 public class SenderConfig {
@@ -20,7 +21,7 @@ public class SenderConfig {
     }
 
     @Bean
-    public FrameSender kafkaFrameSender(KafkaTemplate<String, Collection<Frame>> kafkaTemplate) {
+    public FrameSender kafkaFrameSender(final KafkaTemplate<String, Collection<Frame>> kafkaTemplate) {
         return new KafkaFrameSenderImpl(kafkaTemplate);
     }
 }
