@@ -2,18 +2,19 @@ package com.simulator.oilstation.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.simulator.oilstation.domain.frame.Frame;
-import com.simulator.oilstation.domain.frame.FrameProperties;
-import com.simulator.oilstation.domain.value.Value;
-import com.simulator.oilstation.domain.value.ValueProperty;
+import com.simulator.oilstation.domain.properties.FrameProperties;
+import com.simulator.oilstation.domain.properties.ValueProperty;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oil.station.domain.frame.Frame;
+import oil.station.domain.value.Value;
 
 @Slf4j
 @Service
@@ -22,7 +23,7 @@ public class GeneratorService {
 
     private final FrameProperties frameProperties;
 
-    public Collection<Frame> generate(final List<UUID> uuidList) {
+    public Collection<Frame> generate(final List<UUID> wellsUuids) {
         final ValueProperty voltage = this.frameProperties.getVoltage();
         final ValueProperty current = this.frameProperties.getCurrent();
         final ValueProperty speed = this.frameProperties.getSpeed();
@@ -31,7 +32,9 @@ public class GeneratorService {
         final ValueProperty pressure = this.frameProperties.getPressure();
         final ValueProperty liquidFlowRate = this.frameProperties.getLiquidFlowRate();
 
-        return uuidList.stream().map(uuid -> Frame.builder()
+        return wellsUuids.stream().map(uuid -> Frame.builder()
+                .frameId(UUID.randomUUID())
+                .creationDateTime(LocalDateTime.now())
                 .wellId(uuid)
                 .voltage(Value.builder()
                     .unitValue(this.getRandomValueInRange(voltage.getMinValue(), voltage.getMaxValue()))
@@ -66,7 +69,7 @@ public class GeneratorService {
 
     private Double getRandomValueInRange(final Double min, final Double max) {
         double random = min + (Math.random() * (max - min));
-        final BigDecimal decimal = BigDecimal.valueOf(random).setScale(2, RoundingMode.HALF_UP);
+        final BigDecimal decimal = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP);
         return decimal.doubleValue();
     }
 }

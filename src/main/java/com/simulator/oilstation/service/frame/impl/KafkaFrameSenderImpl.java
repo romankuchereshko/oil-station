@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import com.simulator.oilstation.domain.frame.Frame;
 import com.simulator.oilstation.service.frame.FrameSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oil.station.domain.frame.Frame;
 
 @Slf4j
 @Component
