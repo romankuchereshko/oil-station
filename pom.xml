@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.simulator</groupId>
     <artifactId>oilstation</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>oil-station</name>
     <description>Demo project of oil station</description>
     <properties>
