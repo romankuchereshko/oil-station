@@ -22,7 +22,7 @@ public class GeneratorService {
 
     private final FrameProperties frameProperties;
 
-    public Collection<Frame> generate(final List<UUID> wellsUuids) {
+    public Collection<Frame> generate(final List<Long> wellsUuids) {
         final ValueProperty voltage = this.frameProperties.getVoltage();
         final ValueProperty current = this.frameProperties.getCurrent();
         final ValueProperty speed = this.frameProperties.getSpeed();
@@ -33,7 +33,7 @@ public class GeneratorService {
 
         return wellsUuids.stream()
             .map(uuid -> Frame.builder()
-                .frameId(UUID.randomUUID())
+                .id(UUID.randomUUID())
                 .creationDateTime(LocalDateTime.now())
                 .wellId(uuid)
                 .voltage(this.getRandomValueInRange(voltage.getMinValue(), voltage.getMaxValue()))

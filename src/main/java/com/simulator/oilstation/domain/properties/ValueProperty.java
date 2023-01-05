@@ -9,6 +9,8 @@ public class ValueProperty {
 
     private Double maxValue;
 
-    private String unit;
+    private Double minCriticalValue;
+
+    private Double maxCriticalValue;
 
 }

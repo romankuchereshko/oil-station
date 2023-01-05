@@ -1,9 +1,12 @@
 package com.simulator.oilstation.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
@@ -15,13 +18,14 @@ import org.springframework.stereotype.Service;
 import com.simulator.oilstation.service.frame.FrameSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oil.station.domain.frame.Frame;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class WellService {
 
-    private final List<UUID> wellsUuids = new ArrayList<>();
+    private final List<Long> wellsUuids = new ArrayList<>();
 
     private final AtomicBoolean isGenerating = new AtomicBoolean(Boolean.FALSE);
 
@@ -43,16 +47,21 @@ public class WellService {
     }
 
     @PostConstruct
-    private List<UUID> defineWellsUuidList() {
+    private List<Long> defineWellsUuidList() {
+        final AtomicLong counter = new AtomicLong(0);
         IntStream.range(0, Integer.parseInt(this.wellsQuantity))
-            .forEach(value -> this.wellsUuids.add(UUID.randomUUID()));
-        return this.wellsUuids;
+            .forEach(operand -> this.wellsUuids.add(counter.getAndIncrement()));
+
+        return wellsUuids;
     }
 
     @Scheduled(fixedRateString = "${cron.rate}")
     public void cronJob() {
         if (this.isGenerating.get()) {
-            this.kafkaFrameSender.send(this.generatorService.generate(this.wellsUuids));
+            final Collection<Frame> frames = this.generatorService.generate(this.wellsUuids);
+
+            this.kafkaFrameSender.send(frames);
         }
     }
+
 }

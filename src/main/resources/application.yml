@@ -12,21 +12,35 @@ frame:
   voltage:
     min-value: 200
     max-value: 240
+    min-critical-value: 202.96
+    max-critical-value: 237.72
   current:
     min-value: 40
     max-value: 60
+    min-critical-value: 40.85
+    max-critical-value: 58.65
   speed:
     min-value: 2600
     max-value: 3300
+    min-critical-value: 2634.5
+    max-critical-value: 3287.8
   frequency:
     min-value: 40
     max-value: 60
+    min-critical-value: 40.93
+    max-critical-value: 58.59
   temperature:
     min-value: 175
     max-value: 225
+    min-critical-value: 175.61
+    max-critical-value: 224.13
   pressure:
     min-value: 1200
     max-value: 2500
+    min-critical-value: 1213.4
+    max-critical-value: 2398.3
   liquid-flow-rate:
     min-value: 5
     max-value: 15
+    min-critical-value: 5.32
+    max-critical-value: 14.86
