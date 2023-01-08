@@ -14,6 +14,7 @@ import com.simulator.oilstation.domain.properties.ValueProperty;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;
+import oil.station.domain.frame.Frame.FrameBuilder;
 
 @Slf4j
 @Service
@@ -32,24 +33,40 @@ public class GeneratorService {
         final ValueProperty liquidFlowRate = this.frameProperties.getLiquidFlowRate();
 
         return wellsUuids.stream()
-            .map(uuid -> Frame.builder()
-                .id(UUID.randomUUID())
-                .creationDateTime(LocalDateTime.now())
-                .wellId(uuid)
-                .voltage(this.getRandomValueInRange(voltage.getMinValue(), voltage.getMaxValue()))
-                .current(this.getRandomValueInRange(current.getMinValue(), current.getMaxValue()))
-                .speed(this.getRandomValueInRange(speed.getMinValue(), speed.getMaxValue()))
-                .frequency(this.getRandomValueInRange(frequency.getMinValue(), frequency.getMaxValue()))
-                .temperature(this.getRandomValueInRange(temperature.getMinValue(), temperature.getMaxValue()))
-                .pressure(this.getRandomValueInRange(pressure.getMinValue(), pressure.getMaxValue()))
-                .liquidFlowRate(this.getRandomValueInRange(liquidFlowRate.getMinValue(), liquidFlowRate.getMaxValue()))
-                .build())
+            .map(uuid -> {
+                FrameBuilder builder = Frame.builder();
+
+                return builder
+                    .id(UUID.randomUUID())
+                    .creationDateTime(LocalDateTime.now())
+                    .wellId(uuid)
+                    .voltage(this.getRandomValueInRange(builder, voltage))
+                    .current(this.getRandomValueInRange(builder, current))
+                    .speed(this.getRandomValueInRange(builder, speed))
+                    .frequency(this.getRandomValueInRange(builder, frequency))
+                    .temperature(this.getRandomValueInRange(builder, temperature))
+                    .pressure(this.getRandomValueInRange(builder, pressure))
+                    .liquidFlowRate(this.getRandomValueInRange(builder, liquidFlowRate))
+                    .build();
+            })
             .toList();
     }
 
-    private Double getRandomValueInRange(final Double min, final Double max) {
-        double random = min + (Math.random() * (max - min));
-        final BigDecimal decimal = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP);
-        return decimal.doubleValue();
+    private Double getRandomValueInRange(final FrameBuilder frame, final ValueProperty valueProperty) {
+        double random =
+            valueProperty.getMinValue() + (Math.random() * (valueProperty.getMaxValue() - valueProperty.getMinValue()));
+        double roundedValue = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP).doubleValue();
+
+        if (this.checkCriticalValue(roundedValue, valueProperty)) {
+            frame.isCriticalValue(true);
+        }
+
+        return roundedValue;
     }
+
+    private boolean checkCriticalValue(final double roundedValue, final ValueProperty valueProperty) {
+        return (roundedValue <= valueProperty.getMinCriticalValue() && roundedValue >= valueProperty.getMinValue()) ||
+            (roundedValue >= valueProperty.getMaxCriticalValue() && roundedValue <= valueProperty.getMaxValue());
+    }
+
 }

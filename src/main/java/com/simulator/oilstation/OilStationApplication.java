@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 public class OilStationApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OilStationApplication.class, args);
-		log.info("Running...");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OilStationApplication.class, args);
+        log.info("Running...");
+    }
 
 }

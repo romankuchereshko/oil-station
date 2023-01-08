@@ -3,9 +3,7 @@ package com.simulator.oilstation.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -48,7 +46,7 @@ public class WellService {
 
     @PostConstruct
     private List<Long> defineWellsUuidList() {
-        final AtomicLong counter = new AtomicLong(0);
+        final AtomicLong counter = new AtomicLong(1);
         IntStream.range(0, Integer.parseInt(this.wellsQuantity))
             .forEach(operand -> this.wellsUuids.add(counter.getAndIncrement()));
 
