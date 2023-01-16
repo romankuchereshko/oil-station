@@ -23,7 +23,7 @@ import oil.station.domain.frame.Frame;
 @RequiredArgsConstructor
 public class WellService {
 
-    private final List<Long> wellsUuids = new ArrayList<>();
+    private final List<Long> wellIds = new ArrayList<>();
 
     private final AtomicBoolean isGenerating = new AtomicBoolean(Boolean.FALSE);
 
@@ -48,15 +48,15 @@ public class WellService {
     private List<Long> defineWellsUuidList() {
         final AtomicLong counter = new AtomicLong(1);
         IntStream.range(0, Integer.parseInt(this.wellsQuantity))
-            .forEach(operand -> this.wellsUuids.add(counter.getAndIncrement()));
+            .forEach(operand -> this.wellIds.add(counter.getAndIncrement()));
 
-        return wellsUuids;
+        return wellIds;
     }
 
     @Scheduled(fixedRateString = "${cron.rate}")
     public void cronJob() {
         if (this.isGenerating.get()) {
-            final Collection<Frame> frames = this.generatorService.generate(this.wellsUuids);
+            final Collection<Frame> frames = this.generatorService.generate(this.wellIds);
 
             this.kafkaFrameSender.send(frames);
         }

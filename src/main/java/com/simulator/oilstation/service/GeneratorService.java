@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class GeneratorService {
 
     private final FrameProperties frameProperties;
 
-    public Collection<Frame> generate(final List<Long> wellsUuids) {
+    public Collection<Frame> generate(final List<Long> wellIds) {
         final ValueProperty voltage = this.frameProperties.getVoltage();
         final ValueProperty current = this.frameProperties.getCurrent();
         final ValueProperty speed = this.frameProperties.getSpeed();
@@ -32,33 +31,32 @@ public class GeneratorService {
         final ValueProperty pressure = this.frameProperties.getPressure();
         final ValueProperty liquidFlowRate = this.frameProperties.getLiquidFlowRate();
 
-        return wellsUuids.stream()
+        return wellIds.stream()
             .map(uuid -> {
                 FrameBuilder builder = Frame.builder();
 
                 return builder
-                    .id(UUID.randomUUID())
-                    .creationDateTime(LocalDateTime.now())
                     .wellId(uuid)
-                    .voltage(this.getRandomValueInRange(builder, voltage))
-                    .current(this.getRandomValueInRange(builder, current))
-                    .speed(this.getRandomValueInRange(builder, speed))
-                    .frequency(this.getRandomValueInRange(builder, frequency))
-                    .temperature(this.getRandomValueInRange(builder, temperature))
-                    .pressure(this.getRandomValueInRange(builder, pressure))
-                    .liquidFlowRate(this.getRandomValueInRange(builder, liquidFlowRate))
+                    .voltage(this.calculateRandomValueInRange(builder, voltage))
+                    .current(this.calculateRandomValueInRange(builder, current))
+                    .speed(this.calculateRandomValueInRange(builder, speed))
+                    .frequency(this.calculateRandomValueInRange(builder, frequency))
+                    .temperature(this.calculateRandomValueInRange(builder, temperature))
+                    .pressure(this.calculateRandomValueInRange(builder, pressure))
+                    .liquidFlowRate(this.calculateRandomValueInRange(builder, liquidFlowRate))
+                    .createdAt(LocalDateTime.now())
                     .build();
             })
             .toList();
     }
 
-    private Double getRandomValueInRange(final FrameBuilder frame, final ValueProperty valueProperty) {
+    private Double calculateRandomValueInRange(final FrameBuilder frame, final ValueProperty valueProperty) {
         double random =
             valueProperty.getMinValue() + (Math.random() * (valueProperty.getMaxValue() - valueProperty.getMinValue()));
         double roundedValue = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP).doubleValue();
 
         if (this.checkCriticalValue(roundedValue, valueProperty)) {
-            frame.isCriticalValue(true);
+            frame.isCritical(true);
         }
 
         return roundedValue;
