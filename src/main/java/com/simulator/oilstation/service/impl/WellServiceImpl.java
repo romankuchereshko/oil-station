@@ -33,14 +33,17 @@ public class WellServiceImpl implements WellService {
     private String wellsQuantity;
 
     @Override
-    public void toggleGenerator() {
+    public boolean toggleGenerator() {
         this.isGenerating.set(!this.isGenerating.get());
 
-        if (this.isGenerating.get()) {
-            log.info("Generator is working now!");
+        boolean currentState = this.isGenerating.get();
+
+        if (currentState) {
+            log.info("The generator is running now!");
         } else {
-            log.info("Generator has stopped!");
+            log.info("The generator was stopped!");
         }
+        return currentState;
     }
 
     @Scheduled(fixedRateString = "${cron.rate}")
