@@ -6,8 +6,10 @@ topic:
 
 cron:
   rate: 5000
+
 well:
   number: 3
+
 frame:
   voltage:
     min-value: 200

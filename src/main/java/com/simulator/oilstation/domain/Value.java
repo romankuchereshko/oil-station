@@ -1,9 +1,9 @@
-package com.simulator.oilstation.domain.properties;
+package com.simulator.oilstation.domain;
 
 import lombok.Data;
 
 @Data
-public class ValueProperty {
+public class Value {
 
     private Double minValue;
 

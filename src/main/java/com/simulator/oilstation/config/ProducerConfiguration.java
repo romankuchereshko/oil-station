@@ -19,7 +19,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 
 @Configuration
 @RequiredArgsConstructor
-public class ProducerConfig {
+public class ProducerConfiguration {
 
     private final KafkaProperties kafkaProperties;
 
