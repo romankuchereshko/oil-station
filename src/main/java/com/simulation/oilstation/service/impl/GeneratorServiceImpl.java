@@ -45,6 +45,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 frame.setPressure(this.calculateRandomValueInRange(frame, pressure));
                 frame.setLiquidFlowRate(this.calculateRandomValueInRange(frame, liquidFlowRate));
                 frame.setCreatedAt(LocalDateTime.now());
+                frame.setUpdatedAt(LocalDateTime.now());
 
                 return frame;
             })

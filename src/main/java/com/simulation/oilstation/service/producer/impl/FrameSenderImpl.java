@@ -10,6 +10,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.simulation.oilstation.service.producer.FrameSender;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;
@@ -33,11 +34,13 @@ public class FrameSenderImpl implements FrameSender {
 
             @Override
             public void onSuccess(SendResult<String, Collection<Frame>> result) {
-                log.info("Sent message with offset=[" + result.getRecordMetadata().offset() + "]");
+                log.info("Sent message [{}] with offset [{}]",
+                    result.getProducerRecord().value(),
+                    result.getRecordMetadata().offset());
             }
 
             @Override
-            public void onFailure(Throwable ex) {
+            public void onFailure(@NonNull Throwable ex) {
                 log.error("Unable to send message due to : {}", ex.getMessage());
             }
         });
