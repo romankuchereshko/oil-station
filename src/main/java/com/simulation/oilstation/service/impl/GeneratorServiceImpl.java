@@ -1,4 +1,4 @@
-package com.simulator.oilstation.service.impl;
+package com.simulation.oilstation.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.simulator.oilstation.domain.Value;
-import com.simulator.oilstation.domain.properties.FrameConfigurations;
-import com.simulator.oilstation.service.GeneratorService;
+import com.simulation.oilstation.domain.Value;
+import com.simulation.oilstation.domain.properties.FrameConfigurations;
+import com.simulation.oilstation.service.GeneratorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;

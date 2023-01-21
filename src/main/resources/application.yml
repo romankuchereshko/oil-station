@@ -1,11 +1,16 @@
 server:
   port: 8080
 
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
 topic:
   name: frames
 
 cron:
-  rate: 5000
+  rate: 7000
 
 well:
   number: 3

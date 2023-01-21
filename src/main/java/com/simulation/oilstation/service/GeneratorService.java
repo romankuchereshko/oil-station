@@ -1,4 +1,4 @@
-package com.simulator.oilstation.service;
+package com.simulation.oilstation.service;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,12 +1,12 @@
-package com.simulator.oilstation.rest;
+package com.simulation.oilstation.rest.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.simulator.oilstation.rest.dto.SuccessInfoDTO;
-import com.simulator.oilstation.service.WellService;
+import com.simulation.oilstation.rest.dto.SuccessInfoDTO;
+import com.simulation.oilstation.service.WellService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

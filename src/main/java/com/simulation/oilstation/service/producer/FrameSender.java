@@ -1,4 +1,4 @@
-package com.simulator.oilstation.service.producer;
+package com.simulation.oilstation.service.producer;
 
 import java.util.Collection;
 

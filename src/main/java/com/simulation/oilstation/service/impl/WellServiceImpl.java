@@ -1,4 +1,4 @@
-package com.simulator.oilstation.service.impl;
+package com.simulation.oilstation.service.impl;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.simulator.oilstation.service.GeneratorService;
-import com.simulator.oilstation.service.WellService;
-import com.simulator.oilstation.service.producer.FrameSender;
+import com.simulation.oilstation.service.GeneratorService;
+import com.simulation.oilstation.service.producer.FrameSender;
+import com.simulation.oilstation.service.WellService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;

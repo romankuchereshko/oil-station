@@ -1,4 +1,4 @@
-package com.simulator.oilstation.service.producer.impl;
+package com.simulation.oilstation.service.producer.impl;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import com.simulator.oilstation.service.producer.FrameSender;
+import com.simulation.oilstation.service.producer.FrameSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;

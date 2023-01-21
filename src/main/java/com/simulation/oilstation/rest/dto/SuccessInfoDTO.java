@@ -1,4 +1,4 @@
-package com.simulator.oilstation.rest.dto;
+package com.simulation.oilstation.rest.dto;
 
 import java.io.Serializable;
 

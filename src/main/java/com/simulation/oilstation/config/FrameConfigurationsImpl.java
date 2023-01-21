@@ -1,10 +1,10 @@
-package com.simulator.oilstation.config;
+package com.simulation.oilstation.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import com.simulator.oilstation.domain.Value;
-import com.simulator.oilstation.domain.properties.FrameConfigurations;
+import com.simulation.oilstation.domain.Value;
+import com.simulation.oilstation.domain.properties.FrameConfigurations;
 import lombok.Data;
 
 @Data

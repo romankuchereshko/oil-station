@@ -1,4 +1,4 @@
-package com.simulator.oilstation.config;
+package com.simulation.oilstation.config;
 
 import java.util.Collection;
 import java.util.Map;

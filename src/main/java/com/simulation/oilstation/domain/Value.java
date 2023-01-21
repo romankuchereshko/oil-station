@@ -1,4 +1,4 @@
-package com.simulator.oilstation.domain;
+package com.simulation.oilstation.domain;
 
 import lombok.Data;
 

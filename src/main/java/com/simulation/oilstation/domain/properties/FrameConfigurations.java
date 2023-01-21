@@ -1,6 +1,6 @@
-package com.simulator.oilstation.domain.properties;
+package com.simulation.oilstation.domain.properties;
 
-import com.simulator.oilstation.domain.Value;
+import com.simulation.oilstation.domain.Value;
 
 public interface FrameConfigurations {
 
