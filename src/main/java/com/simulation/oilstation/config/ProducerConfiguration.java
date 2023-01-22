@@ -13,8 +13,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.simulation.library.domain.Frame;
 import lombok.RequiredArgsConstructor;
-import oil.station.domain.frame.Frame;
 import org.apache.kafka.clients.admin.NewTopic;
 
 @Configuration

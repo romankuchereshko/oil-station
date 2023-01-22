@@ -3,7 +3,7 @@ package com.simulation.oilstation.service;
 import java.util.Collection;
 import java.util.List;
 
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 
 public interface GeneratorService {
 

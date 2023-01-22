@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.simulation.library.domain.Frame;
 import com.simulation.oilstation.service.GeneratorService;
-import com.simulation.oilstation.service.producer.FrameSender;
 import com.simulation.oilstation.service.WellService;
+import com.simulation.oilstation.service.producer.FrameSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oil.station.domain.frame.Frame;
 
 @Slf4j
 @Service

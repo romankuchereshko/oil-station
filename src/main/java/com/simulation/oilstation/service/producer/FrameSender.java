@@ -2,7 +2,7 @@ package com.simulation.oilstation.service.producer;
 
 import java.util.Collection;
 
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 
 public interface FrameSender {
 

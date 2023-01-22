@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.simulation.oilstation.domain.Value;
-import com.simulation.oilstation.domain.properties.FrameConfigurations;
+import com.simulation.library.domain.Frame;
+import com.simulation.library.domain.Value;
+import com.simulation.library.domain.properties.FrameConfigurations;
 import com.simulation.oilstation.service.GeneratorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oil.station.domain.frame.Frame;
 
 @Slf4j
 @Service
@@ -52,21 +52,21 @@ public class GeneratorServiceImpl implements GeneratorService {
             .toList();
     }
 
-    private Double calculateRandomValueInRange(final Frame frame, final Value value) {
+    private Double calculateRandomValueInRange(final Frame frame, final Value configValue) {
         double random =
-            value.getMinValue() + (Math.random() * (value.getMaxValue() - value.getMinValue()));
+            configValue.getMinValue() + (Math.random() * (configValue.getMaxValue() - configValue.getMinValue()));
         double roundedValue = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP).doubleValue();
 
-        if (this.checkCriticalValue(roundedValue, value)) {
+        if (this.checkCriticalValue(roundedValue, configValue)) {
             frame.setIsCritical(Boolean.TRUE);
         }
 
         return roundedValue;
     }
 
-    private boolean checkCriticalValue(final double roundedValue, final Value value) {
-        return (roundedValue <= value.getMinCriticalValue() && roundedValue >= value.getMinValue()) ||
-            (roundedValue >= value.getMaxCriticalValue() && roundedValue <= value.getMaxValue());
+    private boolean checkCriticalValue(final double valueToCheck, final Value configValue) {
+        return (valueToCheck <= configValue.getMinCriticalValue() && valueToCheck >= configValue.getMinValue()) ||
+            (valueToCheck >= configValue.getMaxCriticalValue() && valueToCheck <= configValue.getMaxValue());
     }
 
 }
