@@ -9,8 +9,8 @@ spring:
     topic:
       oil-station-topic: oil_station_frames
 
-cron:
-  rate: 7000
-
-well:
-  number: 3
+station:
+  well:
+    number: 3
+  cron:
+    rate: 7000
