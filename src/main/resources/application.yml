@@ -5,9 +5,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
-
-topic:
-  name: frames
+  kafka:
+    topic:
+      oil-station-topic: oil_station_frames
 
 cron:
   rate: 7000

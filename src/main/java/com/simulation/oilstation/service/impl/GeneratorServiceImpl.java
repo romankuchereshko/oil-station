@@ -33,40 +33,26 @@ public class GeneratorServiceImpl implements GeneratorService {
         final Value liquidFlowRate = this.frameConfigurations.getLiquidFlowRate();
 
         return wellIds.stream()
-            .map(id -> {
-                final Frame frame = Frame.builder().isCritical(Boolean.FALSE).build();
-
-                frame.setWellId(id);
-                frame.setVoltage(this.calculateRandomValueInRange(frame, voltage));
-                frame.setCurrent(this.calculateRandomValueInRange(frame, current));
-                frame.setSpeed(this.calculateRandomValueInRange(frame, speed));
-                frame.setFrequency(this.calculateRandomValueInRange(frame, frequency));
-                frame.setTemperature(this.calculateRandomValueInRange(frame, temperature));
-                frame.setPressure(this.calculateRandomValueInRange(frame, pressure));
-                frame.setLiquidFlowRate(this.calculateRandomValueInRange(frame, liquidFlowRate));
-                frame.setCreatedAt(LocalDateTime.now());
-                frame.setUpdatedAt(LocalDateTime.now());
-
-                return frame;
-            })
+            .map(id -> Frame.builder()
+                .wellId(id)
+                .voltage(this.calculateRandomValueInRange(voltage))
+                .current(this.calculateRandomValueInRange(current))
+                .speed(this.calculateRandomValueInRange(speed))
+                .frequency(this.calculateRandomValueInRange(frequency))
+                .temperature(this.calculateRandomValueInRange(temperature))
+                .pressure(this.calculateRandomValueInRange(pressure))
+                .liquidFlowRate(this.calculateRandomValueInRange(liquidFlowRate))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build())
             .toList();
     }
 
-    private Double calculateRandomValueInRange(final Frame frame, final Value configValue) {
+    private Double calculateRandomValueInRange(final Value configValue) {
         double random =
             configValue.getMinValue() + (Math.random() * (configValue.getMaxValue() - configValue.getMinValue()));
-        double roundedValue = BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP).doubleValue();
 
-        if (this.checkCriticalValue(roundedValue, configValue)) {
-            frame.setIsCritical(Boolean.TRUE);
-        }
-
-        return roundedValue;
-    }
-
-    private boolean checkCriticalValue(final double valueToCheck, final Value configValue) {
-        return (valueToCheck <= configValue.getMinCriticalValue() && valueToCheck >= configValue.getMinValue()) ||
-            (valueToCheck >= configValue.getMaxCriticalValue() && valueToCheck <= configValue.getMaxValue());
+        return BigDecimal.valueOf(random).setScale(3, RoundingMode.HALF_UP).doubleValue();
     }
 
 }

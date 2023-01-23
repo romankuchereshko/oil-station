@@ -23,7 +23,7 @@ public class ProducerConfiguration {
 
     private final KafkaProperties kafkaProperties;
 
-    @Value("${topic.name}")
+    @Value("${spring.kafka.topic.oil-station-topic}")
     private String topic;
 
     @Bean

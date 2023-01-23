@@ -22,7 +22,7 @@ public class FrameSenderImpl implements FrameSender {
 
     private final KafkaTemplate<String, Collection<Frame>> kafkaTemplate;
 
-    @Value("${topic.name}")
+    @Value("${spring.kafka.topic.oil-station-topic}")
     private String topic;
 
     @Override
